@@ -1,0 +1,120 @@
+- name: Send docker repo
+  copy:
+    src: k8s-docker.repo
+    dest: /etc/yum.repos.d/docker.repo
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install docker package
+  shell: "yum -y install docker-engine-17.03.0.ce docker-engine-selinux-17.03.0.ce"
+
+- name: Start & Enable Service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Send k8s repo
+  copy:
+    src: k8s-kubernetes.repo
+    dest: /etc/yum.repos.d/kubernetes.repo
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install k8s-pacckages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - kubelet
+    - kubeadm
+    - kubectl
+    - kubernetes-cni
+    - flannel
+
+- name: change cgroup driver
+  replace:
+    dest: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+    regexp: 'Environment="KUBELET_CGROUP_ARGS=--cgroup-driver=systemd"'
+    replace: 'Environment="KUBELET_CGROUP_ARGS=--cgroup-driver=cgroupfs"'
+
+- name: daemon reload
+  systemd:
+    name: kubelet
+    daemon_reload: yes
+    state: started
+    enabled: yes
+
+- name: create cfssl
+  shell: "curl -o /usr/local/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64"
+
+- name: create cfssljson
+  shell: "curl -o /usr/local/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64"
+
+- name: change mode
+  file:
+    path: "{{ item }}"
+    mode: "u+rwx,g+rx,o+rx"
+  with_items:
+    - /usr/local/bin/cfssl
+    - /usr/local/bin/cfssljson
+
+- name: make etcd Dir
+  file:
+    path: /etc/kubernetes/pki/etcd
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+#- name: Send ca-config.json
+#  copy:
+#    src: k8s-ca-config.json
+#    dest: /etc/kubernetes/pki/etcd/ca-config.json
+#    owner: root
+#    group: root
+#    mode: '0644'
+
+#- name: Send ca-csr.json
+#  copy:
+#    src: k8s-ca-csr.json
+#    dest: /etc/kubernetes/pki/etcd/ca-csr.json
+#    owner: root
+#    group: root
+#    mode: '0644'
+
+#- name: Send client.json
+#  copy:
+#    src: k8s-client.json
+#    dest: /etc/kubernetes/pki/etcd/client.json
+#    owner: root
+#    group: root
+#    mode: '0644'
+
+#- name: act cfssl 1
+#  shell: "/usr/local/bin/cfssl gencert -initca ca-csr.json | /usr/local/bin/cfssljson -bare ca -"
+#  args:
+#    chdir: /etc/kubernetes/pki/etcd
+
+#- name: act cfssl 2
+#  shell: "/usr/local/bin/cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client client.json | /usr/local/bin/cfssljson -bare client"
+#  args:
+#    chdir: /etc/kubernetes/pki/etcd
+
+#- name: curl for etcd
+#  shell: "curl -sSL https://github.com/coreos/etcd/releases/download/v3.1.12/etcd-v3.1.12-linux-amd64.tar.gz | tar -xzv --strip-components=1 -C /usr/local/bin/"
+
+##- name: export 1
+##  shell: "export PEER_NAME=$(hostname)"
+
+##- name: export 2
+##  shell: "export PRIVATE_IP={{ ansible_default_ipv4.address }}"
+
+##- name: rm old key
+##  shell: "rm -fr /tmp/id_rsa*"
+
+##- name: ssh-key gen
+##  shell: "ssh-keygen -t rsa -b 4096 -N '' -f /tmp/id_rsa"
+

@@ -1,0 +1,3 @@
+---
+# vars file for k8s-ClusterGroup
+k8s-hosts_path: /home/ansible/playbooks/kubernetes/files/k8s-hosts

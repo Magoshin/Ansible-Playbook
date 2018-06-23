@@ -1,0 +1,3 @@
+---
+# vars file for auditbeat
+target_rpm: auditbeat-6.1.1-x86_64.rpm

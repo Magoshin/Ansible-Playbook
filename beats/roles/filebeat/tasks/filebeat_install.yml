@@ -1,0 +1,36 @@
+- name: Send RPM
+  copy:
+    src: "{{ target_rpm }}"
+    dest: /tmp/
+
+- name: Install beat
+  yum:
+    name: "/tmp/{{ target_rpm }}"
+    state: installed
+
+- name: Send beat.yml
+  template:
+    src: filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
+    owner: root
+    group: root
+    mode: 0600
+    backup: yes
+
+- name: Send module.yml
+  template:
+    src: module_system.yml.j2
+    dest: /etc/filebeat/modules.d/system.yml
+    owner: root
+    group: root
+    mode: 0600
+    backup: yes
+
+- name: Start service
+  service:
+    name: filebeat
+    enabled: yes
+    state: started
+
+- name: Remove RPM
+  shell: "rm -fr /tmp/{{ target_rpm }}"

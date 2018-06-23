@@ -1,0 +1,4 @@
+---
+# tasks file for zabbix-server
+- import_tasks: ZabbixServer.yml
+- import_tasks: Snmptt.yml

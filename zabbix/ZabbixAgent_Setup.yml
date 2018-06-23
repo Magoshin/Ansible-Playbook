@@ -1,0 +1,9 @@
+##- hosts: zabbix-agent
+- hosts: ap-northeast-1
+  remote_user: ansible
+  become: yes
+  become_user: root
+  vars_files:
+    - vars/common.yml
+  roles:
+    - zabbix-agent

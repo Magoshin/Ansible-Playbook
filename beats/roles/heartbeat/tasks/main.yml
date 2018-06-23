@@ -1,0 +1,3 @@
+---
+# tasks file for heartbeat
+- import_tasks: heartbeat_install.yml

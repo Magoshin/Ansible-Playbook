@@ -1,0 +1,3 @@
+---
+# vars file for zabbix-agent
+##zabbix_agent_visiblename: "visiblename"

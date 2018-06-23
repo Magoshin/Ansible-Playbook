@@ -1,0 +1,21 @@
+- name: Download and install the public signing key
+  shell: "rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+
+- name: Send elasticsearch.repo
+  template:
+    src: elasticsearch.repo.j2
+    dest: /etc/yum.repos.d/elasticsearch.repo
+
+- name: Install Elasticsearch Package
+  yum:
+    name: elasticsearch
+    state: latest
+
+- name: daemon-reload
+  shell: systemctl daemon-reload
+
+- name: es esrvice start
+  shell: "systemctl start elasticsearch"
+
+- name: es esrvice start
+  shell: "systemctl enable elasticsearch"

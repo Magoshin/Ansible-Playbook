@@ -1,0 +1,12 @@
+---
+# tasks file for zabbix-agent
+- name: dump templates
+  local_action:
+    module: zabbix_template
+    server_url: "http://{{ zabbix_server_ipaddr }}"
+    login_user: "{{ zabbix_admin_user }}"
+    login_password: "{{ zabbix_admin_password }}"
+    host_name: "{{ ansible_hostname }}"
+    template_name: 001_Tmpl_ALL_Alive_Ping
+    state: dump
+  register: template_dump

@@ -1,0 +1,6 @@
+- hosts: metricbeat
+  remote_user: ansible
+  become: yes
+  become_user: root
+  roles:
+    - metricbeat

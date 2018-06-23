@@ -1,0 +1,3 @@
+---
+# tasks file for beats
+- import_tasks: packetbeat_install.yml

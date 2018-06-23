@@ -1,0 +1,2 @@
+k8s_master_ipaddr: 172.31.31.110
+k8s_hosts_path: "/home/ansible/playbooks/kubernetes/files/k8s-hosts"

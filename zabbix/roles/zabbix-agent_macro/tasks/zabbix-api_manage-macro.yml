@@ -1,0 +1,12 @@
+# tasks file for zabbix-agent
+- name: Manage Macro
+  local_action:
+    module: zabbix_hostmacro
+    server_url: "http://{{ zabbix_server_ipaddr }}/zabbix"
+    login_user: "{{ zabbix_admin_user }}"
+    login_password: "{{ zabbix_admin_password }}"
+    host_name: "{{ ansible_hostname }}"
+    macro_name: "{{ item.value.macname }}"
+    macro_value: "{{ item.value.macval }}"
+    state: present
+  with_dict: "{{ hostmacro }}"

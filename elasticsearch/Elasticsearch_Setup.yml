@@ -1,0 +1,8 @@
+- hosts: elasticsearch
+  remote_user: centos
+  become: yes
+  become_user: root
+  vars_files:
+   - vars/common.yml
+  roles:
+   - elasticsearch

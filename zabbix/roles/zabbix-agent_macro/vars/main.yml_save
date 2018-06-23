@@ -1,0 +1,15 @@
+---
+# vars file for zabbix-agent_macro
+hostmacro:
+  CPU_HIGH:
+    macname: CPU_HIGH
+    macval: 95
+  CPU_LOW:
+    macname: CPU_LOW
+    macval: 80
+  MEM_HIGH:
+    macname: MEM_HIGH
+    macval: 95
+  MEM_LOW:
+    macname: MEM_LOW
+    macval: 80

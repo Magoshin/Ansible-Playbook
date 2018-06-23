@@ -1,0 +1,4 @@
+---
+# vars file for k8s-worker
+k8sUser: naphtes
+k8sGroup: naphtes-union

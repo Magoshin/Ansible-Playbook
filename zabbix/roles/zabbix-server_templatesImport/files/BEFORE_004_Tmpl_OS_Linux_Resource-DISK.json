@@ -1,0 +1,344 @@
+{
+    "zabbix_export": {
+        "date": "2018-05-29T07:58:01Z",
+        "groups": [
+            {
+                "name": "All_Templates"
+            }
+        ],
+        "templates": [
+            {
+                "applications": [
+                    {
+                        "name": "Resource"
+                    }
+                ],
+                "description": "",
+                "discovery_rules": [
+                    {
+                        "allowed_hosts": "",
+                        "authtype": "0",
+                        "delay": "300",
+                        "description": "Discovery of file systems of different types as defined in global regular expression \"File systems for discovery\".",
+                        "filter": {
+                            "conditions": [
+                                {
+                                    "formulaid": "A",
+                                    "macro": "{#FSTYPE}",
+                                    "operator": "8",
+                                    "value": "@File systems for discovery"
+                                }
+                            ],
+                            "evaltype": "0",
+                            "formula": ""
+                        },
+                        "graph_prototypes": [
+                            {
+                                "graph_items": [
+                                    {
+                                        "calc_fnc": "2",
+                                        "color": "1A7C11",
+                                        "drawtype": "0",
+                                        "item": {
+                                            "host": "004_Tmpl_OS_Linux_Resource-DISK",
+                                            "key": "vfs.fs.size[{#FSNAME},pused]"
+                                        },
+                                        "sortorder": "0",
+                                        "type": "0",
+                                        "yaxisside": "0"
+                                    }
+                                ],
+                                "height": "200",
+                                "name": "Disk使用率_{#FSNAME}",
+                                "percent_left": "0.0000",
+                                "percent_right": "0.0000",
+                                "show_3d": "0",
+                                "show_legend": "1",
+                                "show_triggers": "1",
+                                "show_work_period": "1",
+                                "type": "0",
+                                "width": "900",
+                                "yaxismax": "100.0000",
+                                "yaxismin": "0.0000",
+                                "ymax_item_1": "0",
+                                "ymax_type_1": "0",
+                                "ymin_item_1": "0",
+                                "ymin_type_1": "0"
+                            }
+                        ],
+                        "host_prototypes": [],
+                        "ipmi_sensor": "",
+                        "item_prototypes": [
+                            {
+                                "allowed_hosts": "",
+                                "application_prototypes": [],
+                                "applications": [
+                                    {
+                                        "name": "Resource"
+                                    }
+                                ],
+                                "authtype": "0",
+                                "delay": "300",
+                                "description": "",
+                                "history": "90d",
+                                "inventory_link": "0",
+                                "ipmi_sensor": "",
+                                "jmx_endpoint": "",
+                                "key": "vfs.fs.size[{#FSNAME},free]",
+                                "logtimefmt": "",
+                                "master_item_prototype": [],
+                                "name": "Resource_DiskAmountSpace_$1",
+                                "params": "",
+                                "password": "",
+                                "port": "",
+                                "preprocessing": [
+                                    {
+                                        "params": "1",
+                                        "type": "1"
+                                    }
+                                ],
+                                "privatekey": "",
+                                "publickey": "",
+                                "snmp_community": "",
+                                "snmp_oid": "",
+                                "snmpv3_authpassphrase": "",
+                                "snmpv3_authprotocol": "0",
+                                "snmpv3_contextname": "",
+                                "snmpv3_privpassphrase": "",
+                                "snmpv3_privprotocol": "0",
+                                "snmpv3_securitylevel": "0",
+                                "snmpv3_securityname": "",
+                                "status": "0",
+                                "trends": "365d",
+                                "type": "0",
+                                "units": "B",
+                                "username": "",
+                                "value_type": "3",
+                                "valuemap": []
+                            },
+                            {
+                                "allowed_hosts": "",
+                                "application_prototypes": [],
+                                "applications": [
+                                    {
+                                        "name": "Resource"
+                                    }
+                                ],
+                                "authtype": "0",
+                                "delay": "300",
+                                "description": "",
+                                "history": "90d",
+                                "inventory_link": "0",
+                                "ipmi_sensor": "",
+                                "jmx_endpoint": "",
+                                "key": "vfs.fs.size[{#FSNAME},pfree]",
+                                "logtimefmt": "",
+                                "master_item_prototype": [],
+                                "name": "Resource_DiskAmountSpace_$1_percent",
+                                "params": "",
+                                "password": "",
+                                "port": "",
+                                "preprocessing": [],
+                                "privatekey": "",
+                                "publickey": "",
+                                "snmp_community": "",
+                                "snmp_oid": "",
+                                "snmpv3_authpassphrase": "",
+                                "snmpv3_authprotocol": "0",
+                                "snmpv3_contextname": "",
+                                "snmpv3_privpassphrase": "",
+                                "snmpv3_privprotocol": "0",
+                                "snmpv3_securitylevel": "0",
+                                "snmpv3_securityname": "",
+                                "status": "0",
+                                "trends": "365d",
+                                "type": "0",
+                                "units": "%",
+                                "username": "",
+                                "value_type": "0",
+                                "valuemap": []
+                            },
+                            {
+                                "allowed_hosts": "",
+                                "application_prototypes": [],
+                                "applications": [
+                                    {
+                                        "name": "Resource"
+                                    }
+                                ],
+                                "authtype": "0",
+                                "delay": "300",
+                                "description": "",
+                                "history": "90d",
+                                "inventory_link": "0",
+                                "ipmi_sensor": "",
+                                "jmx_endpoint": "",
+                                "key": "vfs.fs.size[{#FSNAME},pused]",
+                                "logtimefmt": "",
+                                "master_item_prototype": [],
+                                "name": "Resource_DiskUsage_$1_percent",
+                                "params": "",
+                                "password": "",
+                                "port": "",
+                                "preprocessing": [],
+                                "privatekey": "",
+                                "publickey": "",
+                                "snmp_community": "",
+                                "snmp_oid": "",
+                                "snmpv3_authpassphrase": "",
+                                "snmpv3_authprotocol": "0",
+                                "snmpv3_contextname": "",
+                                "snmpv3_privpassphrase": "",
+                                "snmpv3_privprotocol": "0",
+                                "snmpv3_securitylevel": "0",
+                                "snmpv3_securityname": "",
+                                "status": "0",
+                                "trends": "365d",
+                                "type": "0",
+                                "units": "%",
+                                "username": "",
+                                "value_type": "0",
+                                "valuemap": []
+                            },
+                            {
+                                "allowed_hosts": "",
+                                "application_prototypes": [],
+                                "applications": [
+                                    {
+                                        "name": "Resource"
+                                    }
+                                ],
+                                "authtype": "0",
+                                "delay": "300",
+                                "description": "",
+                                "history": "90d",
+                                "inventory_link": "0",
+                                "ipmi_sensor": "",
+                                "jmx_endpoint": "",
+                                "key": "vfs.fs.size[{#FSNAME},total]",
+                                "logtimefmt": "",
+                                "master_item_prototype": [],
+                                "name": "Resource_DiskTotalVolume_$1",
+                                "params": "",
+                                "password": "",
+                                "port": "",
+                                "preprocessing": [],
+                                "privatekey": "",
+                                "publickey": "",
+                                "snmp_community": "",
+                                "snmp_oid": "",
+                                "snmpv3_authpassphrase": "",
+                                "snmpv3_authprotocol": "0",
+                                "snmpv3_contextname": "",
+                                "snmpv3_privpassphrase": "",
+                                "snmpv3_privprotocol": "0",
+                                "snmpv3_securitylevel": "0",
+                                "snmpv3_securityname": "",
+                                "status": "0",
+                                "trends": "365d",
+                                "type": "0",
+                                "units": "B",
+                                "username": "",
+                                "value_type": "3",
+                                "valuemap": []
+                            }
+                        ],
+                        "jmx_endpoint": "",
+                        "key": "vfs.fs.discovery",
+                        "lifetime": "30d",
+                        "name": "Mounted filesystem discovery",
+                        "params": "",
+                        "password": "",
+                        "port": "",
+                        "privatekey": "",
+                        "publickey": "",
+                        "snmp_community": "",
+                        "snmp_oid": "",
+                        "snmpv3_authpassphrase": "",
+                        "snmpv3_authprotocol": "0",
+                        "snmpv3_contextname": "",
+                        "snmpv3_privpassphrase": "",
+                        "snmpv3_privprotocol": "0",
+                        "snmpv3_securitylevel": "0",
+                        "snmpv3_securityname": "",
+                        "status": "0",
+                        "trigger_prototypes": [
+                            {
+                                "correlation_mode": "0",
+                                "correlation_tag": "",
+                                "dependencies": [],
+                                "description": "",
+                                "expression": "{004_Tmpl_OS_Linux_Resource-DISK:vfs.fs.size[{#FSNAME},pused].count(#3,{$DISK_HIGH},gt)}=3",
+                                "manual_close": "0",
+                                "name": "004001_{#FSNAME}_DiskUsage is low.Danger:Value={ITEM.VALUE}",
+                                "priority": "3",
+                                "recovery_expression": "",
+                                "recovery_mode": "0",
+                                "status": "0",
+                                "tags": [],
+                                "type": "0",
+                                "url": ""
+                            },
+                            {
+                                "correlation_mode": "0",
+                                "correlation_tag": "",
+                                "dependencies": [],
+                                "description": "",
+                                "expression": "{004_Tmpl_OS_Linux_Resource-DISK:vfs.fs.size[{#FSNAME},pused].count(#3,{$DISK_LOW},gt)}=3 and {004_Tmpl_OS_Linux_Resource-DISK:vfs.fs.size[{#FSNAME},pused].count(#3,{$DISK_HIGH},gt)}<>3",
+                                "manual_close": "0",
+                                "name": "004002_{#FSNAME}_DiskUsage is low.Warning:Value={ITEM.VALUE}",
+                                "priority": "2",
+                                "recovery_expression": "",
+                                "recovery_mode": "0",
+                                "status": "0",
+                                "tags": [],
+                                "type": "0",
+                                "url": ""
+                            },
+                            {
+                                "correlation_mode": "0",
+                                "correlation_tag": "",
+                                "dependencies": [],
+                                "description": "",
+                                "expression": "{004_Tmpl_OS_Linux_Resource-DISK:vfs.fs.size[{#FSNAME},pused].last(0)}<= {$DISK_LOW} and {004_Tmpl_OS_Linux_Resource-DISK:vfs.fs.size[{#FSNAME},pused].count(#4,{$DISK_LOW},gt)}=3",
+                                "manual_close": "0",
+                                "name": "004003_{#FSNAME}_DiskUsage restoration.Info:Value={ITEM.VALUE}",
+                                "priority": "1",
+                                "recovery_expression": "",
+                                "recovery_mode": "0",
+                                "status": "0",
+                                "tags": [],
+                                "type": "0",
+                                "url": ""
+                            }
+                        ],
+                        "type": "0",
+                        "username": ""
+                    }
+                ],
+                "groups": [
+                    {
+                        "name": "All_Templates"
+                    }
+                ],
+                "httptests": [],
+                "items": [],
+                "macros": [
+                    {
+                        "macro": "{$DISK_HIGH}",
+                        "value": "95"
+                    },
+                    {
+                        "macro": "{$DISK_LOW}",
+                        "value": "90"
+                    }
+                ],
+                "name": "004_Tmpl_OS_Linux_Resource-DISK",
+                "screens": [],
+                "template": "004_Tmpl_OS_Linux_Resource-DISK",
+                "templates": []
+            }
+        ],
+        "version": "3.4"
+    }
+}

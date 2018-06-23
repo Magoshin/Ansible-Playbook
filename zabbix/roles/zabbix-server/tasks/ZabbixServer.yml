@@ -1,0 +1,125 @@
+- name: Send First RPM
+  copy:
+    src: zabbix-release-3.5-1.el7.noarch.rpm
+    dest: /tmp
+    owner: ansible
+    group: ansible
+    mode: 0644
+
+- name: Install Zabbix 4.0 lates
+  yum:
+    name: /tmp/zabbix-release-3.5-1.el7.noarch.rpm
+    state: present
+  
+- name: Deployment Zabbix-Server Package
+  yum: name={{ item }} state=latest
+  with_items:
+  - zabbix-agent 
+  - zabbix-get
+  - zabbix-sender
+  - zabbix-server-mysql
+  - zabbix-web
+  - zabbix-web-japanese
+  - zabbix-web-mysql 
+  - mariadb
+  - mariadb-server
+  - MySQL-python
+  - net-snmp
+
+- name: send my.cnf 
+  template:
+    src=my.cnf.j2
+    dest=/etc/my.cnf
+    owner=root
+    group=root
+    mode=0644
+    backup=yes
+ 
+- name: Start service mariadb
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: remove zabbix db
+  shell: mysql -uroot -e'drop database zabbix;'
+  ignore_errors: true
+
+- name: create zabbixDB
+  shell: mysqladmin -uroot create zabbix --default-character-set=utf8
+
+- name: config privileges
+  shell: mysql -uroot -e"grant all privileges on zabbix.* to zabbix@localhost identified by '{{ zabbix_db_password }}';"
+
+- name: flush privileges
+  shell: mysql -uroot -e"flush privileges;"
+
+- name: gunzip create.sql.gz
+  shell: gunzip /usr/share/doc/`ls /usr/share/doc/ | grep server-mysql`/create.sql.gz
+  ignore_errors: true
+
+- name: import zabbix DB default
+  shell: mysql -uroot zabbix < /usr/share/doc/`ls /usr/share/doc/ | grep server-mysql`/create.sql
+
+- name: send httpd.conf
+  template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: send zabbix.conf
+  template:
+    src: zabbix.conf.j2
+    dest: /etc/httpd/conf.d/zabbix.conf
+    owner: apache
+    group: apache
+    mode: 0644
+    backup: yes
+
+- name: Start service apache
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: send snmptrapd.conf 
+  template:
+    src: snmptrapd.conf.j2
+    dest: /etc/snmp/snmptrapd.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Start service snmptrapd
+  service:
+    name: snmptrapd
+    state: started
+    enabled: yes
+
+- name: send zabbix_server.conf 
+  template:
+    src: zabbix_server.conf.j2
+    dest: /etc/zabbix/zabbix_server.conf
+    owner: zabbix
+    group: zabbix
+    mode: 0640
+    backup: yes
+
+- name: send zabbix.conf.php
+  template:
+    src: zabbix.conf.php.j2
+    dest: /etc/zabbix/web/zabbix.conf.php
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Start service zabbix-server
+  service:
+    name: zabbix-server
+    state: started
+    enabled: yes

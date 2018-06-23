@@ -1,0 +1,43 @@
+- name: set timezone to Asia/Tokyo
+  timezone:
+    name: Asia/Tokyo
+
+- name: Install chrony
+  yum:
+    name: chrony
+    state: present
+
+- name: Start & Enable Service
+  service:
+    name: chronyd
+    state: started
+    enabled: yes
+
+- name: Send hosts
+  copy:
+    src: "/home/ansible/playbooks/kubernetes/files/k8s-hosts"
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: check hostname
+  shell: grep {{ ansible_default_ipv4.address }} /etc/hosts | awk '{print $2}'
+  register: hostname_result
+
+#- debug: var=hostname_result.stdout
+
+- name: Change hostname
+  hostname:
+    name: "{{ hostname_result.stdout }}"
+
+- name: Send hosts
+  copy:
+    src: k8s-sysctl.conf
+    dest: /etc/sysctl.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: enable kernel parameter
+  shell: sysctl --system

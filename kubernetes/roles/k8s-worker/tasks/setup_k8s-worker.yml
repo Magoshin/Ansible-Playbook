@@ -1,0 +1,111 @@
+- name: Send docker repo
+  copy:
+    src: k8s-docker.repo
+    dest: /etc/yum.repos.d/docker.repo
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install docker package
+  shell: "yum -y install docker-engine-17.03.0.ce docker-engine-selinux-17.03.0.ce"
+
+- name: Start & Enable Service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Send k8s repo
+  copy:
+    src: k8s-kubernetes.repo
+    dest: /etc/yum.repos.d/kubernetes.repo
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install k8s-pacckages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - kubelet
+    - kubeadm
+    - kubernetes-cni
+    - flannel
+
+- name: Start & Enable kubelet
+  systemd:
+    name: kubelet
+    state: started
+    enabled: yes
+
+- name: change cgroup driver
+  replace:
+    dest: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+    regexp: 'Environment="KUBELET_CGROUP_ARGS=--cgroup-driver=systemd"'
+    replace: 'Environment="KUBELET_CGROUP_ARGS=--cgroup-driver=cgroupfs"'
+
+- name: daemon reload
+  systemd:
+    name: kubelet
+    daemon_reload: yes
+    state: started
+    enabled: yes
+
+- name: make kube Dir
+  file:
+    path: "/root/.kube"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: make kube Dir
+  file:
+    path: "/home/{{ k8sUser }}/.kube"
+    state: directory
+    owner: "{{ k8sUser }}"
+    group: "{{ k8sGroup }}"
+    mode: '0755'
+
+# 管理者
+- name: Send cluster config
+  template:
+    src: k8s-api-config.j2
+    dest: "/root/.kube/config"
+    owner: root
+    group: root
+    mode: '0644'
+
+# 作業ユーザ
+- name: Send cluster config
+  template:
+    src: k8s-api-config.j2
+    dest: "/home/{{ k8sUser }}/.kube/config"
+    owner: "{{ k8sUser }}"
+    group: "{{ k8sGroup }}"
+    mode: '0644'
+
+- name: import gpg key
+  shell: rpm --import https://packages.cloud.google.com/yum/doc/yum-key.gpg
+
+# クラスタから離脱
+- name: reset k8s-cluster
+  shell: kubeadm reset
+
+- name: join k8s-cluster
+  ##shell: "kubeadm join --token 8b98e7.9d83b35276d2d058 {{ k8s_master_ipaddr }}:6443 --discovery-token-ca-cert-hash sha256:3cf3b3af5f361de92126ab4e9275da8fb01ec4f73533bf87fec82f8d04c638e4"
+  shell: "kubeadm join --token 8b98e7.9d83b35276d2d058 {{ k8s_master_ipaddr }}:6443 --discovery-file /root/.kube/config"
+
+##- name: Send kubelet.conf
+##  template:
+##    src: k8s-kubelet.conf.j2
+##    dest: /etc/kubernetes/kubelet.conf
+##    owner: root
+##    group: root
+##    mode: '0600'
+
+- name: Restart kubelet
+  systemd:
+    name: kubelet
+    state: restarted

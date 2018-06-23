@@ -1,0 +1,127 @@
+{
+    "zabbix_export": {
+        "date": "2018-06-20T11:03:59Z", 
+        "groups": [
+            {
+                "name": "All_Templates"
+            }
+        ], 
+        "templates": [
+            {
+                "applications": [
+                    {
+                        "name": "Alive"
+                    }
+                ], 
+                "description": "", 
+                "discovery_rules": [], 
+                "groups": [
+                    {
+                        "name": "All_Templates"
+                    }
+                ], 
+                "httptests": [], 
+                "items": [
+                    {
+                        "allowed_hosts": "", 
+                        "applications": [
+                            {
+                                "name": "Alive"
+                            }
+                        ], 
+                        "authtype": "0", 
+                        "delay": "60", 
+                        "description": "", 
+                        "history": "14d", 
+                        "inventory_link": "0", 
+                        "ipmi_sensor": "", 
+                        "jmx_endpoint": "", 
+                        "key": "icmpping", 
+                        "logtimefmt": "", 
+                        "master_item": [], 
+                        "name": "死活監視_ICMPPing", 
+                        "params": "", 
+                        "password": "", 
+                        "port": "", 
+                        "preprocessing": [], 
+                        "privatekey": "", 
+                        "publickey": "", 
+                        "snmp_community": "", 
+                        "snmp_oid": "", 
+                        "snmpv3_authpassphrase": "", 
+                        "snmpv3_authprotocol": "0", 
+                        "snmpv3_contextname": "", 
+                        "snmpv3_privpassphrase": "", 
+                        "snmpv3_privprotocol": "0", 
+                        "snmpv3_securitylevel": "0", 
+                        "snmpv3_securityname": "", 
+                        "status": "0", 
+                        "trends": "14d", 
+                        "type": "3", 
+                        "units": "", 
+                        "username": "", 
+                        "value_type": "3", 
+                        "valuemap": {
+                            "name": "Service state"
+                        }
+                    }
+                ], 
+                "macros": [], 
+                "name": "001_Tmpl_ALL_Alive_Ping", 
+                "screens": [], 
+                "template": "001_Tmpl_ALL_Alive_Ping", 
+                "templates": []
+            }
+        ], 
+        "triggers": [
+            {
+                "correlation_mode": "0", 
+                "correlation_tag": "", 
+                "dependencies": [], 
+                "description": "", 
+                "expression": "{001_Tmpl_ALL_Alive_Ping:icmpping.count(#3,0,\"eq\")}=3", 
+                "manual_close": "0", 
+                "name": "001001_監視セグメントで監視対象との通信が停止しました:{HOST.IP}", 
+                "priority": "5", 
+                "recovery_expression": "", 
+                "recovery_mode": "0", 
+                "status": "0", 
+                "tags": [], 
+                "type": "0", 
+                "url": ""
+            }, 
+            {
+                "correlation_mode": "0", 
+                "correlation_tag": "", 
+                "dependencies": [], 
+                "description": "", 
+                "expression": "{001_Tmpl_ALL_Alive_Ping:icmpping.count(#4,0,\"eq\")}=3 and {001_Tmpl_ALL_Alive_Ping:icmpping.last(0)}=1", 
+                "manual_close": "0", 
+                "name": "001002_監視セグメントで監視対象との通信が再開しました:{HOST.IP}", 
+                "priority": "1", 
+                "recovery_expression": "", 
+                "recovery_mode": "0", 
+                "status": "0", 
+                "tags": [], 
+                "type": "0", 
+                "url": ""
+            }
+        ], 
+        "value_maps": [
+            {
+                "mappings": [
+                    {
+                        "newvalue": "Down", 
+                        "value": "0"
+                    }, 
+                    {
+                        "newvalue": "Up", 
+                        "value": "1"
+                    }
+                ], 
+                "name": "Service state"
+            }
+        ], 
+        "version": "3.4"
+    }
+}

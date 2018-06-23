@@ -1,0 +1,65 @@
+- yum:
+    name: https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+
+- name: Install snmptt module
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - snmptt
+  - net-snmp-perl
+  - perl-Digest-SHA1
+  - perl-Sys-Syslog
+  - perl-List-MoreUtils
+  - perl-IO-stringy
+  - net-snmp-utils
+  - perl
+  - perl-Module-Build
+  - perl-Time-HiRes 
+
+- name: Unarchive snmptt_Conf
+  unarchive:
+    src: snmptt_Confs.tar.gz
+    dest: /etc/snmp
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Send snmptt.ini
+  template:
+    src: snmptt.ini.j2
+    dest: /etc/snmp/snmptt.ini
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes
+
+- name: Send snmptthandler-embedded
+  template:
+    src: snmptthandler-embedded.j2
+    dest: /usr/sbin/snmptthandler-embedded
+    owner: root
+    group: root
+    mode: '0755'
+    backup: no
+
+- name: Touch snmptt.log
+  file:
+    path: /var/log/snmptt/snmptt.log
+    owner: snmptt
+    group: snmptt
+    mode: '0664'
+    state: touch
+
+- name: ReStart snmptt
+  service:
+    name: snmptt
+    state: restarted
+
+- name: enable snmptt
+  shell: systemctl enable snmptt
+
+- name: ReStart snmptrapd
+  service:
+    name: snmptrapd
+    state: restarted

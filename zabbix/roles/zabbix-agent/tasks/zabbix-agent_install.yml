@@ -1,0 +1,35 @@
+---
+- name: Send RPM
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/
+  with_fileglob:
+    - /home/ansible/playbooks/zabbix/roles/zabbix-agent/files/zabbix*.rpm
+
+- name: Install ZabbixAgent Module
+  yum:
+    name: "/tmp/{{ item }}"
+    state: latest
+  with_items:
+    - zabbix-sender-4.0-latest.el7.x86_64.rpm
+    - zabbix-agent-4.0-latest.el7.x86_64.rpm
+    - zabbix-get-4.0-latest.el7.x86_64.rpm
+
+- name: Send zabbix_agentd.conf
+  template:
+    src: zabbix_agentd.conf.j2
+    dest: /etc/zabbix/zabbix_agentd.conf
+    owner: zabbix
+    group: zabbix
+    mode: 0644
+    backup: yes
+
+- name: Start and Enable zabbix-agent
+  service:
+    name: zabbix-agent
+    enabled: yes
+    state: started
+
+- name: Remove RPM
+  shell: rm -fr /tmp/zabbix-*.rpm
+  ignore_errors: true

@@ -1,0 +1,10 @@
+---
+# tasks file for zabbix-agent
+- include_vars:
+    dir: ../vars 
+  with_first_found:
+    files:
+      - "/vars/{{ inventory_hostname }}.yaml"
+    skip: true
+- import_tasks: zabbix-agent_install.yml
+- import_tasks: zabbix-api_create-host_zabbix-agent.yml

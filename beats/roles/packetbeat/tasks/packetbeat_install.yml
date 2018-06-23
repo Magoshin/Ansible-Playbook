@@ -1,0 +1,36 @@
+- name: Send RPM
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/
+  with_items:
+    - packetbeat-6.1.1-x86_64.rpm
+    - libpcap-1.5.3-9.el7.x86_64.rpm
+
+- name: Install beat
+  yum:
+    name: "/tmp/{{ item }}"
+    state: installed
+  with_items:
+    - packetbeat-6.1.1-x86_64.rpm
+    - libpcap-1.5.3-9.el7.x86_64.rpm
+
+- name: Send beat.yml
+  template:
+    src: packetbeat.yml.j2
+    dest: /etc/packetbeat/packetbeat.yml
+    owner: root
+    group: root
+    mode: 0600
+    backup: yes
+
+- name: Start service
+  service:
+    name: packetbeat
+    enabled: yes
+    state: started
+
+- name: Remove RPM
+  shell: "rm -fr /tmp/{{ item }}"
+  with_items:
+    - packetbeat-6.1.1-x86_64.rpm
+    - libpcap-1.5.3-9.el7.x86_64.rpm

@@ -1,0 +1,19 @@
+{
+    "hosts": [
+        "mgmjoke79.com",
+    ],
+    "CN": "etcd",
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+      {
+        "C": "JP",
+        "L": "Nagareyama",
+        "O": "Mgmjoke_local",
+        "OU": "Operations",
+        "ST": "Chiba"
+      }
+    ]
+}

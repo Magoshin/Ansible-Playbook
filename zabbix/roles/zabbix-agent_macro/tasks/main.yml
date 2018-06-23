@@ -1,0 +1,3 @@
+---
+# tasks file for zabbix-agent_macro
+- import_tasks: zabbix-api_manage-macro.yml

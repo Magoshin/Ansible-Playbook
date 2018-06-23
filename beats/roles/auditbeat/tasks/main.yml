@@ -1,0 +1,3 @@
+---
+# tasks file for auditbeat
+- import_tasks: auditbeat_install.yml

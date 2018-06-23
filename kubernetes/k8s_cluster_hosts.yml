@@ -1,0 +1,8 @@
+- hosts: k8s-cluster
+  remote_user: centos
+  become: yes
+  become_user: root
+##  vars_files:
+##    - vars/common.yml
+  roles:
+    - k8s-ClusterGroup

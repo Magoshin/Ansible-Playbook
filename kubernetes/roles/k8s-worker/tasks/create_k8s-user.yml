@@ -1,0 +1,36 @@
+- name: Create Ope Groups
+  group:
+    name: "{{ k8sGroup }}"
+
+- name: Create Ope Users
+  user:
+    name: "{{ k8sUser }}"
+    group: "{{ k8sGroup }}"
+    home: "/home/{{ k8sUser }}"
+
+- name: mkdir .ssh
+  file:
+    path: "/home/{{ k8sUser }}/.ssh/"
+    state: directory
+    owner: "{{ k8sUser }}"
+    group: "{{ k8sGroup }}"
+    mode: 0700
+
+- name: add authorized keys
+  file:
+    path: "/home/{{ k8sUser }}/.ssh/authorized_keys"
+    state: touch
+    owner: "{{ k8sUser }}"
+    group: "{{ k8sGroup }}"
+    mode: 0600
+
+- name: send publickey
+  copy:
+    src: k8s-user_id_rsa.pub
+    dest: "/home/{{ k8sUser }}/.ssh/authorized_keys"
+
+- name: add sudo
+  lineinfile:
+    dest: /etc/sudoers
+    backup: yes
+    line: '{{ k8sUser }} ALL=(ALL) NOPASSWD: ALL'

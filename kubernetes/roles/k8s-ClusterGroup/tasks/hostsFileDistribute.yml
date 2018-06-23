@@ -1,0 +1,7 @@
+- name: copy hosts
+  copy:
+    src: "/home/ansible/playbooks/kubernetes/files/k8s-hosts"
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: '0644'

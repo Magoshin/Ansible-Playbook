@@ -1,0 +1,20 @@
+- name: disable SELinux
+  selinux:
+    state: disabled
+
+- name: Check SELinux Status
+  shell: "getenforce"
+  register: selinux_result
+
+- name: server shutdown
+  shell: sleep 2 && shutdown -r now
+  async: 1
+  poll: 0
+  when: selinux_result.stdout != "Disabled"
+
+- name: waiting for server up
+  wait_for:
+    host: "{{ ansible_default_ipv4.address }}"
+    port: 22
+    delay: 10
+  connection: local
