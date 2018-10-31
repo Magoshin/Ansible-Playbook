@@ -1,3 +1,0 @@
----
-# tasks file for zabbix-agent
-- import_tasks: zabbix-api_showTemplates.yml
