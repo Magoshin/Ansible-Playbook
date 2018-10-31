@@ -1,0 +1,3 @@
+---
+# tasks file for mgm_git
+- import_tasks: mgm_git.yml

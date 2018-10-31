@@ -1,6 +1,5 @@
 ---
 # tasks file for k8s-master
 - include_tasks: create_k8s-user.yml
-- include_tasks: config_selinux.yml
 - include_tasks: setup_os-default.yml
 - include_tasks: setup_k8s-master.yml

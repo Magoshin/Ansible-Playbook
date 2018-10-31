@@ -1,6 +1,6 @@
 {
     "zabbix_export": {
-        "date": "2018-06-20T11:04:09Z", 
+        "date": "2018-10-07T11:20:40Z", 
         "groups": [
             {
                 "name": "All_Templates"
@@ -118,7 +118,7 @@
                         "inventory_link": "0", 
                         "ipmi_sensor": "", 
                         "jmx_endpoint": "", 
-                        "key": "proc.num[,,,/usr/sbin/sshd /aaa]", 
+                        "key": "proc.num[,,,/usr/sbin/sshd]", 
                         "logtimefmt": "", 
                         "master_item": [], 
                         "name": "プロセス監視_sshd", 
@@ -250,7 +250,7 @@
                 "correlation_tag": "", 
                 "dependencies": [], 
                 "description": "", 
-                "expression": "{006_Tmpl_OS_Linux_Process-Common:proc.num[,,,/usr/sbin/sshd /aaa].last()}<1", 
+                "expression": "{006_Tmpl_OS_Linux_Process-Common:proc.num[,,,/usr/sbin/sshd].last()}<1", 
                 "manual_close": "0", 
                 "name": "006005_sshdの稼働プロセス数が閾値を下回りました。現在のプロセス数={ITEM.VALUE}", 
                 "priority": "3", 
@@ -266,7 +266,7 @@
                 "correlation_tag": "", 
                 "dependencies": [], 
                 "description": "", 
-                "expression": "{006_Tmpl_OS_Linux_Process-Common:proc.num[,,,/usr/sbin/sshd /aaa].last()}>0 and {006_Tmpl_OS_Linux_Process-Common:proc.num[,,,/usr/sbin/sshd /aaa].last(#2)}<1", 
+                "expression": "{006_Tmpl_OS_Linux_Process-Common:proc.num[,,,/usr/sbin/sshd].last()}>0 and {006_Tmpl_OS_Linux_Process-Common:proc.num[,,,/usr/sbin/sshd].last(#2)}<1", 
                 "manual_close": "0", 
                 "name": "006006_sshdの稼働プロセス数が正常状態に復旧しました。現在のプロセス数={ITEM.VALUE}", 
                 "priority": "1", 

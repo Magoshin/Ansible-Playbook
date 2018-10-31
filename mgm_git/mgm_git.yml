@@ -1,0 +1,4 @@
+- hosts: mgm_git
+  connection: local
+  roles:
+    - mgm_git

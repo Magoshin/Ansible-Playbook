@@ -23,3 +23,6 @@ template_list:
   template8:
     name: '008_Tmpl_MW_Zabbix_Alive-Agent'
     file: "{{ lookup('file', '008_Tmpl_MW_Zabbix_Alive-Agent.json') }}"
+  template9:
+    name: '009_Tmpl_Demo_Item'
+    file: "{{ lookup('file', '009_Tmpl_Demo_Item.json') }}"

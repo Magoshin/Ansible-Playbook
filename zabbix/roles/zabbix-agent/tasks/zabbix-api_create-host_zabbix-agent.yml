@@ -28,6 +28,7 @@
       - 004_Tmpl_OS_Linux_Resource-DISK
       - 005_Tmpl_OS_Linux_Log
       - 006_Tmpl_OS_Linux_Process-Common
+      - 009_Tmpl_Demo_Item
     status: enabled
     state: present
     interfaces:

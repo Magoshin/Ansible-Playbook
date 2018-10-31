@@ -14,9 +14,7 @@
     server_url: "http://{{ zabbix_server_ipaddr }}/zabbix"
     login_user: "{{ zabbix_admin_user }}"
     login_password: "{{ zabbix_admin_password }}"
-##    template_name: "001_Tmpl_ALL_Alive_Ping"
     template_name: "{{ item.value.name }}"
-##    template_json: "{{ lookup('file', '001_Tmpl_ALL_Alive_Ping.json') }}"
     template_json: "{{ item.value.file }}"
     template_groups:
       - All_Templates
