@@ -1,4 +1,3 @@
-##- hosts: zabbix-agent
 - hosts: zabbix-server-master
   remote_user: ansible
   become: yes
