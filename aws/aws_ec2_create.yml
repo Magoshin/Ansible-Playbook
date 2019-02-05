@@ -1,0 +1,8 @@
+- hosts: aws_create
+#  remote_user: ansible
+#  become: yes
+#  become_user: root
+  vars_files:
+    - vars/common.yml
+  roles:
+    - aws_ec2_create

@@ -1,0 +1,10 @@
+---
+- name: create user
+  ios_command:
+    commands:
+      - "username {{ item.value.new_user }} password {{ item.value.new_password }} privilege 15"
+  with_dict: "{{ new_password_dict }}"
+
+- name: save running config to startup config
+  ios_config:
+    save_when: modified

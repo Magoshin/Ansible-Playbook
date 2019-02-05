@@ -1,0 +1,21 @@
+- name: Copy prometheus binary
+  copy:
+    src: "{{ item }}"
+    dest: /usr/bin/
+    mode: 0755
+  loop:
+    - node_exporter-latest.linux-amd64/node_exporter
+
+- name: Copy node_exporter service manifest
+  copy:
+    src: node_exporter.service
+    dest: /usr/lib/systemd/system/
+
+- name: systemctl daemon-reload command
+  shell: systemctl daemon-reload
+
+- name: set service
+  service:
+    name: node_exporter
+    state: started
+    enabled: yes

@@ -1,0 +1,65 @@
+- name: yum update all
+  yum:
+    update_only: yes
+
+- name: yum install tools
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - wget
+    - git
+    - gcc
+    - make
+    - net-tools
+
+- name: Copy prometheus binary
+  copy:
+    src: "{{ item }}"
+    dest: /usr/bin/
+    mode: 0755
+  loop:
+    - prometheus-latest.linux-amd64/prometheus
+    - prometheus-latest.linux-amd64/promtool
+
+- name: Make prometheus directory 1
+  file:
+    path: /etc/prometheus
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Make prometheus directory 2
+  file:
+    src: /etc/prometheus/console_libraries
+    dest: /etc/prometheus/console_libraries
+    state: link
+    owner: root
+    group: root
+    mode: 0755
+    force: yes
+
+- name: Copy prometheus yaml
+  copy:
+    src: prometheus-latest.linux-amd64/prometheus.yml
+    dest: /etc/prometheus/prometheus.yml
+
+- name: Copy prometheus start optin
+  copy:
+    src: prometheus-option
+    dest: /etc/default/prometheus
+
+- name: Copy prometheus service manifest
+  copy:
+    src: prometheus.service
+    dest: /usr/lib/systemd/system/
+
+- name: systemctl daemon-reload command
+  shell: systemctl daemon-reload
+
+- name: set service
+  service:
+    name: prometheus
+    state: started
+    enabled: yes

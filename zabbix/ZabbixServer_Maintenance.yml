@@ -1,0 +1,10 @@
+##- hosts: zabbix-agent
+- hosts: ansible-controller 
+  remote_user: ansible
+  become: yes
+  become_user: root
+  vars_files:
+    - vars/common.yml
+    - vars/maintenance_list.yml
+  roles:
+    - zabbix-server_maintenance

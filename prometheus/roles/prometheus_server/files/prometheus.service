@@ -1,0 +1,13 @@
+[Unit]
+Description=Prometheus Service
+Documentation=https://prometheus.io/docs/introduction/overview/
+After=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/default/prometheus
+ExecStart=/usr/bin/prometheus $OPTIONS
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

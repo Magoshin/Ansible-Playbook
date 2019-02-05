@@ -1,0 +1,23 @@
+---
+- hosts: cisco
+  gather_facts: false
+  connection: local
+
+  vars:
+    cli:
+      host:      "{{ inventory_hostname }}"    # ホスト対象ホスト
+      username:  ansible            # ログインユーザー
+      password:  router01        # ログインパスワード
+      authorize:  true                         # 特権モードに移行
+      auth_pass: mgmjoke0079   # 特権パスワード
+  tasks:
+  - name: get configure
+    ios_command:
+      provider: "{{ cli }}"
+      commands:
+        - show run
+        - show version
+    register: output
+
+  - debug: var=output
+

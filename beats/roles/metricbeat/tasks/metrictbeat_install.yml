@@ -1,16 +1,12 @@
 - name: Send RPM
   copy:
-    src: "{{ item }}"
+    src: "{{ target_rpm }}"
     dest: /tmp/
-  with_items:
-    - metricbeat-6.1.1-x86_64.rpm
 
 - name: Install beat
   yum:
-    name: "/tmp/{{ item }}"
+    name: "/tmp/{{ target_rpm }}"
     state: installed
-  with_items:
-    - metricbeat-6.1.1-x86_64.rpm
 
 - name: Send beat.yml
   template:
@@ -28,6 +24,4 @@
     state: started
 
 - name: Remove RPM
-  shell: "rm -fr /tmp/{{ item }}"
-  with_items:
-    - metricbeat-6.1.1-x86_64.rpm
+  shell: "rm -fr /tmp/{{ target_rpm }}"

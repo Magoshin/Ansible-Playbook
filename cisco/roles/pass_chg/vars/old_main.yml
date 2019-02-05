@@ -1,0 +1,7 @@
+---
+# vars file for pass_chg
+#new_password: testpassword
+new_password_dict:
+  172.31.22.169:
+    new_user: rt01-user
+    new_password: router01

@@ -3,7 +3,7 @@
     src: "{{ item }}"
     dest: /tmp/
   with_items:
-    - packetbeat-6.1.1-x86_64.rpm
+    - "{{ target_rpm }}"
     - libpcap-1.5.3-9.el7.x86_64.rpm
 
 - name: Install beat
@@ -11,7 +11,7 @@
     name: "/tmp/{{ item }}"
     state: installed
   with_items:
-    - packetbeat-6.1.1-x86_64.rpm
+    - "{{ target_rpm }}"
     - libpcap-1.5.3-9.el7.x86_64.rpm
 
 - name: Send beat.yml
@@ -32,5 +32,5 @@
 - name: Remove RPM
   shell: "rm -fr /tmp/{{ item }}"
   with_items:
-    - packetbeat-6.1.1-x86_64.rpm
+    - "{{ target_rpm }}"
     - libpcap-1.5.3-9.el7.x86_64.rpm

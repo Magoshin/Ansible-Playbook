@@ -1,0 +1,3 @@
+---
+# tasks file for prometheus_server
+- import_tasks: prometheus_server.yml

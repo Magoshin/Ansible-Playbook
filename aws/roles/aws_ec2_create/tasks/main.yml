@@ -1,0 +1,3 @@
+---
+# tasks file for aws_ec2_create
+- import_tasks: aws_ec2_create.yml

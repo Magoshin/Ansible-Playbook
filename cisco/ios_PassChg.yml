@@ -1,0 +1,8 @@
+- hosts: cisco
+  remote_user: ansible
+  gather_facts: false
+  connection: network_cli
+  vars_files:
+    - vars/common.yml
+  roles:
+    - pass_chg

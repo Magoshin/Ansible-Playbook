@@ -1,0 +1,12 @@
+---
+- name: create user
+  ios_user:
+    name: "{{ new_user }}"
+    privilege: 15
+    state: present
+    configured_password: "{{ new_password }}" 
+    update_password: always
+
+- name: save running config to startup config
+  ios_config:
+    save_when: modified
