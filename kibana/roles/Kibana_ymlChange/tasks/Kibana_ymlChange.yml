@@ -1,0 +1,7 @@
+- name: Change kibana.yml
+  template:
+    src: local_kibana.yml
+    dest: /etc/kibana/kibana.yml
+
+- name: kibana restart
+  shell: "systemctl restart elasticsearch"

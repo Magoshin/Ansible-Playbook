@@ -1,5 +1,5 @@
 - hosts: aws_create
   vars_files:
-    - vars/cnetos7_group.yml
+    - vars/centos7_group.yml
   roles:
     - aws_ec2_create

@@ -1,0 +1,5 @@
+- hosts: ansible-controller
+  vars_files:
+    - vars/centos7_group.yml
+  roles:
+    - aws_ec2_tagchg

@@ -1,0 +1,49 @@
+- name: set timezone
+  timezone:
+    name: Asia/Tokyo
+
+- name: install open java
+  yum:
+    name: java-1.8.0-openjdk
+    state: latest
+
+- name: Download and install the public signing key
+  shell: "rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+
+- name: Send elasticsearch.repo
+  template:
+    src: elasticsearch.repo.j2
+    dest: /etc/yum.repos.d/elasticsearch.repo
+
+- name: Install elasticsearch Package
+  yum:
+    name: elasticsearch
+    state: latest
+
+- name: Send elasticsearch.yml
+  template:
+    src: elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+    owner: root
+    group: elasticsearch
+    mode: 0660
+    backup: yes
+
+- name: Send elasticsearchi-sysconfig
+  template:
+    src: elasticsearch-sysconfig.j2
+    dest: /etc/sysconfig/elasticsearch
+    owner: root
+    group: elasticsearch
+    mode: 0660
+    backup: yes
+
+- name: daemon-reload
+  systemd:
+    daemon_reload: yes
+
+- name: es esrvice start
+  systemd:
+    name: elasticsearch
+    state: started
+    enabled: yes

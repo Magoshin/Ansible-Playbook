@@ -8,4 +8,7 @@
     region: "{{ region }}"
     vpc_subnet_id: "{{ subnet_id }}"
     assign_public_ip: yes
+    count: "{{ create_num }}"
+    instance_tags:
+      Name: "{{ tagname_org }}"
   register: ec2

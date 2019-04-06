@@ -1,0 +1,8 @@
+- hosts: elasticsearch_cluster
+  remote_user: centos
+  become: yes
+  become_user: root
+  vars_files:
+   - vars/elasticsearch_cluster.yml
+  roles:
+   - elasticsearch_cluster

@@ -1,0 +1,30 @@
+- name: create server's directory
+  local_action:
+    module: file
+    path: "{{ home_conf_directory }}/remote/{{ ansible_hostname }}"
+    state: directory
+    owner: ansible
+    group: ansible
+    mode: 0755
+
+- name: first step
+  shell: find /usr/local/nom/etc/ -type f
+  register: file_list
+  ignore_errors: true
+
+- name: manage 
+  fetch:
+    src: "{{ item }}"
+    dest: "{{ home_conf_directory }}/remote/{{ ansible_hostname }}/"
+  with_items:
+    - "{{ file_list.stdout_lines }}"
+
+- name: manage ifcfg
+  fetch:
+    src: "{{ item }}"
+    dest: "{{ home_conf_directory }}/remote/{{ ansible_hostname }}/ifcfg/"
+    flat: yes
+  with_fileglob:
+    - /etc/sysconfig/network-scripts/ifcfg-*
+  ignore_errors: True
+

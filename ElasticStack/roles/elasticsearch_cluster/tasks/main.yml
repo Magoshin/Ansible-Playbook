@@ -1,0 +1,3 @@
+---
+# tasks file for elasticsearch
+- import_tasks: elasticsearch_Cluster_Setup.yml

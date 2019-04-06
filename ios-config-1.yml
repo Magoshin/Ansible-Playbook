@@ -9,7 +9,7 @@
       username:  ansible            # ログインユーザー
       password:  router01        # ログインパスワード
       authorize:  true                         # 特権モードに移行
-      auth_pass: mgmjoke0079   # 特権パスワード
+      auth_pass: XXXXXX   # 特権パスワード
   tasks:
   - name: get configure
     ios_command:

@@ -7,24 +7,23 @@
     group: ansible
     mode: 0755
 
-- name: first step
-  shell: find /usr/local/nom/etc/ -type f
-  register: file_list
-  ignore_errors: true
-
-- name: manage 
+- name: manage zabbix_agentd.conf
   fetch:
-    src: "{{ item }}"
-    dest: "{{ home_conf_directory }}/remote/{{ ansible_hostname }}/"
-  with_items:
-    - "{{ file_list.stdout_lines }}"
-
-- name: manage ifcfg
-  fetch:
-    src: "{{ item }}"
-    dest: "{{ home_conf_directory }}/remote/{{ ansible_hostname }}/ifcfg/"
+    src: /etc/zabbix/zabbix_agentd.conf
+    dest: "{{ home_conf_directory }}/remote/{{ ansible_hostname }}/zabbix_agentd.conf-{{ ansible_hostname }}"
     flat: yes
-  with_fileglob:
-    - /etc/sysconfig/network-scripts/ifcfg-*
   ignore_errors: True
 
+- name: manage filebeat
+  fetch:
+    src: /etc/filebeat/filebeat.yml
+    dest: "{{ home_conf_directory }}/remote/{{ ansible_hostname }}/filebeat.ym-{{ ansible_hostname }}"
+    flat: yes
+  ignore_errors: True
+
+- name: manage metricbeat
+  fetch:
+    src: /etc/metricbeat/metricbeat.yml
+    dest: "{{ home_conf_directory }}/remote/{{ ansible_hostname }}/metricbeat.ym-{{ ansible_hostname }}"
+    flat: yes
+  ignore_errors: True

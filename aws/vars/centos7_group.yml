@@ -1,9 +1,11 @@
 keypair: mgmjoke-home-rhel72_zbx30
-security_group: launch-wizard-5
-instance_type: t2.small
+security_group: launch-wizard-4
+instance_type: t2.medium
 image : ami-4dd5522b
 region: ap-northeast-1
 subnet_id: subnet-1d00816b
 create_num: 3
+tagname_org: tagfst_Centos7
+osname: Centos7
 volumes:
   - delete_on_termination: true
