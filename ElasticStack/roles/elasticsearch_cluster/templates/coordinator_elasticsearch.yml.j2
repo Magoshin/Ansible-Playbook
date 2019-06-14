@@ -83,11 +83,14 @@ http.port: 9200
 # The default list of hosts is ["127.0.0.1", "[::1]"]
 #
 #discovery.seed_hosts: ["host1", "host2"]
-discovery.seed_hosts: ["elasticsearch01", "elasticsearch02", "elasticsearch03"]
+discovery.seed_hosts: ["el_master01", "el_master02", "el_master03", "el_coodinator01", "el_coodinator02", "el_datanode01", "el_datanode02"]
 #
 # Bootstrap the cluster using an initial set of master-eligible nodes:
 #
 #cluster.initial_master_nodes: ["node-1", "node-2"]
-cluster.initial_master_nodes: ["elasticsearch01", "elasticsearch02", "elasticsearch03"]
+cluster.initial_master_nodes: ["el_master01", "el_master02", "el_master03"]
 #
 # For more information, consult the discovery and cluster formation module documentation.
+node.master: false
+node.data: false
+node.ingest: false

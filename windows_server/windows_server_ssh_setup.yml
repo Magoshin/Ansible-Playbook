@@ -1,0 +1,8 @@
+- hosts: windows-server-ssh
+  remote_user: administrator
+  #become: yes
+  #become_user: root
+  #vars_files:
+  # - vars/windows_server_ssh.yml
+  roles:
+   - windows_server_ssh

@@ -1,0 +1,17 @@
+# prepare node
+- name: set timezone
+  timezone:
+    name: Asia/Tokyo
+
+- name: send make hosts
+  template:
+    src: el_hosts
+    dest: /etc/hosts
+
+- name: get my ip address from hosts
+  shell: "grep {{ ansible_eth0.ipv4.address }} /home/ansible/playbooks/ElasticStack/roles/elasticsearch_cluster/templates/el_hosts | awk -F' ' '{ print $2 }'"
+  register: this_hostname
+  delegate_to: localhost
+
+- name: set persistent_hostname
+  shell: "hostnamectl set-hostname {{ this_hostname.stdout }}"

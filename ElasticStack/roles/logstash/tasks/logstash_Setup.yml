@@ -1,0 +1,40 @@
+- name: install open java
+  yum:
+    name: java-1.8.0-openjdk
+    state: latest
+
+- name: Download and install the public signing key
+  shell: "rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+
+- name: Send logstash.repo
+  template:
+    src: logstash.repo.j2
+    dest: /etc/yum.repos.d/logstash.repo
+
+- name: Install logstash Package
+  yum:
+    name: logstash
+    state: latest
+
+- name: get my ip address from hosts
+  shell: "grep {{ ansible_eth0.ipv4.address }} /home/ansible/playbooks/ElasticStack/roles/elasticsearch_cluster/templates/el_hosts | awk -F' ' '{ print $2 }'"
+  register: this_hostname
+  delegate_to: localhost
+
+- debug: var=this_hostname
+
+- name: replace node name
+  replace:
+    path: /etc/logstash/logstash.yml
+    regexp: '^node.name: .*\d{2}$'
+    replace: 'node.name: {{ this_hostname.stdout }}'
+
+- name: daemon-reload
+  systemd:
+    daemon_reload: yes
+
+- name: es logstash start
+  systemd:
+    name: logstash
+    state: started
+    enabled: yes

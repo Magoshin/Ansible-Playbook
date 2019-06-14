@@ -1,0 +1,3 @@
+---
+# tasks file for windows_server_ssh
+- import_tasks: windows_server_ssh.yml

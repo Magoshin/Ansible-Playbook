@@ -1,0 +1,1 @@
+mygroup_elasticsearch_yml: "datanode_elasticsearch.yml.j2"

@@ -1,8 +1,8 @@
-- hosts: zabbix-agent
+- hosts: logstash
   remote_user: ansible
   become: yes
   become_user: root
   vars_files:
-    - vars/common.yml
+   - vars/logstash.yml
   roles:
-    - zabbix-agent
+   - logstash
