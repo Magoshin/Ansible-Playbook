@@ -1,4 +1,4 @@
-Role Name
+zabbix-server_ver40_rhel8
 =========
 
 A brief description of the role goes here.
