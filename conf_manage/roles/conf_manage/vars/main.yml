@@ -1,3 +1,0 @@
----
-# vars file for conf_manage
-home_conf_directory: "/home/ansible/files/conf_manage"

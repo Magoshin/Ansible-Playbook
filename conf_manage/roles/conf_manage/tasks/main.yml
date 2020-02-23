@@ -1,4 +1,0 @@
----
-# tasks file for conf_manage
-#
-- include_tasks: conf_manage.yml

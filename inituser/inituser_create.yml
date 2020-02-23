@@ -1,5 +1,0 @@
-- hosts: ap-northeast-1
-  become: yes
-  become_user: root
-  roles:
-    - inituser_create

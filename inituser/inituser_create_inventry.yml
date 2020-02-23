@@ -1,5 +1,0 @@
-- hosts: init
-  become: yes
-  become_user: root
-  roles:
-    - inituser_create

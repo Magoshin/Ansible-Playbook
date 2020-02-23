@@ -1,7 +1,0 @@
-# tasks file for ec2_tag
-- name: Change tags to ec2
-  ec2_tag:
-    resource: '{{ ec2id }}'
-    state: present
-    tags:
-      Name: "{{ osname }}-{{ ec2id }}"
