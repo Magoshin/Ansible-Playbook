@@ -1,31 +1,63 @@
 zabbix-server_ver40_rhel8
 =========
 
-A brief description of the role goes here.
+ - Install zabbix server 4.0
+ - Set up SNMPTT 1.4
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+ - Ansible 2.9
+ - AWS
+ - EC2 instance (RHEL 8)
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+◆roles
+zabbix-server_ver40_rhel8
+|-- defaults
+|   +-- main.yml
+|-- handlers
+|   +-- main.yml
+|-- meta
+|   +-- main.yml
+|-- README.md
+|-- tasks
+|   |-- main.yml
+|   |-- Snmptt.yml
+|   +-- ZabbixServer.yml
+|-- templates
+|   |-- client.cnf.j2
+|   |-- httpd.conf.j2
+|   |-- logrotate_snmptt.j2
+|   |-- mariadb-server.cnf.j2
+|   |-- mysql-clients.cnf.j2
+|   |-- snmptrapd.conf.j2
+|   |-- snmptt.conf.j2
+|   |-- snmptt.ini.j2
+|   |-- snmptt.service.j2
+|   |-- zabbix.conf.j2
+|   |-- zabbix.conf.php.j2
+|   +-- zabbix_server.conf.j2
+|-- tests
+|   |-- inventory
+|   +-- test.yml
++-- vars
+    +-- main.yml
+
+◆vars
+common.yml
+ - zabbix_db_password: zabbix DB password
+ - zabbix_snmp_community: zabbix snmptrap community name
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
 
 License
 -------
@@ -35,4 +67,5 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+mgmjoke79_mgm
+
