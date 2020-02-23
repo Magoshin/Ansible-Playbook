@@ -1,3 +1,0 @@
----
-# tasks file for prometheus_exporter
-- import_tasks: prometheus_exporter.yml

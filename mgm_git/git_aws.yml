@@ -1,4 +1,0 @@
-- hosts: ansible-controller
-  connection: local
-  roles:
-    - mgm_git

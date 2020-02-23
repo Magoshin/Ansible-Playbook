@@ -1,8 +1,0 @@
-- hosts: prometheus_server
-  remote_user: ansible
-  become: yes
-  become_user: root
-  vars_files:
-   - vars/common.yml
-  roles:
-   - prometheus_server

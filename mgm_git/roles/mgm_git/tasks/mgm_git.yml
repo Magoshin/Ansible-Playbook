@@ -1,5 +1,0 @@
-- name: git push
-  mgm_git_push:
-    src_dir: "/home/ansible/files/conf_manage"
-    git_user: root
-  ignore_errors: True
