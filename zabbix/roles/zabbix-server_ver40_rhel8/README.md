@@ -15,6 +15,8 @@ Role Variables
 --------------
 
 ◆roles
+
+```
 zabbix-server_ver40_rhel8
 |-- defaults
 |   +-- main.yml
@@ -45,6 +47,7 @@ zabbix-server_ver40_rhel8
 |   +-- test.yml
 +-- vars
     +-- main.yml
+```
 
 ◆vars
 common.yml
