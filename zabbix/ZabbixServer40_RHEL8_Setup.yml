@@ -1,0 +1,8 @@
+- hosts: zabbix_server40_rhel8
+  remote_user: ec2-user
+  become: yes
+  become_user: root
+  vars_files:
+    - vars/common.yml
+  roles:
+    - zabbix-server_ver40_rhel8

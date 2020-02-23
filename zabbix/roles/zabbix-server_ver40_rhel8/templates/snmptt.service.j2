@@ -1,0 +1,18 @@
+[Unit]
+Description=SNMP Trap Translator
+Wants=network-online.target
+After=syslog.target network-online.target
+
+[Service]
+Environment="CONFIG=/etc/snmp/snmptt.ini"
+ExecStart=/usr/sbin/snmptt -c ${CONFIG}
+ExecReload=/bin/kill -HUP ${MAINPID}
+Type=forking
+PIDFile=/var/run/snmptt.pid
+Restart=always
+TimeoutStopSec=320s
+KillMode=process
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

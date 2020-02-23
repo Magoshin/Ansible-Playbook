@@ -1,0 +1,8 @@
+- name: oracle_rhel
+  expect:
+    command: sqlplus -S / as sysdba  @$ORACLE_HOME/rdbms/admin/spcreate.sql
+    responses:
+      "^perfstat_passwordに値を入力してください": "perfstat"
+      "^default_tablespaceに値を入力してください": "SYSAUX"
+      "^temporary_tablespaceに値を入力してください": "TEMP"
+

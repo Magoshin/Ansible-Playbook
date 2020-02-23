@@ -1,0 +1,26 @@
+---
+- name: Make Folder
+  win_file:
+    path: C:\Program Files\Zabbix
+    state: directory
+
+- name: Send exe
+  win_copy:
+    src: "{{ item }}"
+    dest: C:\Program Files\Zabbix
+  loop:
+    - zabbix_agentd_30-25.exe
+    - zabbix_get_30-25.exe
+    - zabbix_sender_30-25.exe
+
+- name: Install ZabbixAgent Module
+  win_command: C:\Program Files\Zabbix/zabbix_get_30-25.exe -i
+
+#- name: Send zabbix_agentd.conf
+#  template:
+#    src: zabbix_agentd.conf.j2
+#    dest: /etc/zabbix/zabbix_agentd.conf
+#    owner: zabbix
+#    group: zabbix
+#    mode: 0644
+#    backup: yes

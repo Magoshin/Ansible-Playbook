@@ -1,0 +1,143 @@
+- name: 
+  dnf:
+    name: perl-5.26.3-416.el8
+    state: present
+
+- name: Download snmptt file
+  get_url:
+    url: https://sourceforge.net/projects/snmptt/files/snmptt/snmptt_1.4/snmptt_1.4.tgz/download
+    dest: /usr/src/download
+    mode: '0644'
+
+- name: Unarchive remote only
+  unarchive:
+    src: /usr/src/download
+    dest: /usr/src/
+    remote_src: yes
+ 
+- name: add snmptt group
+  group:
+    name: snmptt
+    state: present
+    gid: 1040
+
+- name: Add the snmptt user 
+  user:
+    name: snmptt
+    comment: snmptt
+    uid: 1040
+    group: snmptt
+    shell: /usr/bin/false
+
+- name: Change owner
+  file:
+    path: /usr/src/snmptt_1.4
+    state: touch
+    owner: snmptt
+    group: snmptt
+
+- name: Copy snmptt binary
+  shell: "cp /usr/src/snmptt_1.4/{{ item }} /usr/sbin/{{ item }}"
+  with_items:
+  - snmptt
+  - snmptthandler
+  - snmptthandler-embedded
+  - snmpttconvertmib
+
+- name: Change permission
+  file:
+    path: /usr/sbin/{{ item }}
+    state: touch
+    owner: snmptt
+    group: snmptt
+    mode: '0755'
+  with_items:
+  - snmptt
+  - snmptthandler
+  - snmptthandler-embedded
+  - snmpttconvertmib
+
+- name: Send snmptt.ini
+  template:
+    src: snmptt.ini.j2
+    dest: /etc/snmp/snmptt.ini
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes
+
+- name: Send snmptt for logrotate
+  template:
+    src: logrotate_snmptt.j2
+    dest: /etc/logrotate.d/snmptt
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes
+
+- name: Create snmptt mibs dir
+  file:
+    path: /etc/snmp/snmptt_mibs
+    state: directory
+    mode: '0755'
+    owner: snmptt
+    group: snmptt
+
+- name: Send snmptt.conf
+  template:
+    src: snmptt.conf.j2
+    dest: /etc/snmp/snmptt_mibs/snmptt.conf
+    owner: snmptt
+    group: snmptt
+    mode: '0644'
+    backup: yes
+
+- name: Create snmptt log dir
+  file:
+    path: /var/log/snmptt
+    state: directory
+    mode: '0755'
+    owner: snmptt
+    group: snmptt
+
+- name: Create snmptt.log
+  file:
+    path: /var/log/snmptt/snmptt.log
+    owner: snmptt
+    group: snmptt
+    mode: '0664'
+    state: touch
+
+- name: Create snmptt spool dir
+  file:
+    path: /var/spool/snmptt/
+    state: directory
+    mode: '0755'
+    owner: snmptt
+    group: snmptt
+
+- name: add 1 line sysconfig-snmptrapd
+  lineinfile:
+    dest: /etc/sysconfig/snmptrapd
+    line: 'OPTIONS="-m +ALL -On"'
+
+- name: Send snmptt.service
+  template:
+    src: snmptt.service.j2
+    dest: /usr/lib/systemd/system/snmptt.service
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes
+
+- name: Start snmptt
+  service:
+    name: snmptt
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: ReStart snmptrapd
+  service:
+    name: snmptrapd
+    state: restarted

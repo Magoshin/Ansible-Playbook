@@ -1,0 +1,3 @@
+---
+# tasks file for zabbix-agent
+- import_tasks: zabbix-agent_install.yml

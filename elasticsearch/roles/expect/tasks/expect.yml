@@ -1,0 +1,5 @@
+- name: expect
+  expect:
+    command: ssh 172.31.31.83
+    responses:
+      SQL >: syntax

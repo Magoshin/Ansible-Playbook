@@ -1,10 +1,11 @@
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-172.31.26.17 el_master01
-172.31.18.179 el_master02
-172.31.20.65 el_master03
-172.31.18.200 el_coodinator01
-172.31.18.253 el_coodinator02
-172.31.28.228 el_datanode01
-172.31.19.149 el_datanode02
-172.31.18.255 logstash01
+172.31.28.133 el_master01
+172.31.31.1 el_master02
+172.31.24.241 el_master03
+172.31.25.74 el_coodinator01
+172.31.24.209 el_coodinator02
+172.31.17.106 el_datanode01
+172.31.26.91 el_datanode02
+172.31.18.183 el_datanode03
+172.31.29.248 logstash01

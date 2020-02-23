@@ -1,0 +1,240 @@
+- name: set timezone to Asia/Tokyo
+  timezone:
+    name: Asia/Tokyo
+
+- name: disable SELinux
+  selinux:
+    state: disabled
+
+- name: Check SELinux Status
+  shell: "getenforce"
+  register: selinux_result
+
+- name: server shutdown
+  shell: sleep 2 && shutdown -r now
+  async: 1
+  poll: 0
+  when: selinux_result.stdout != "Disabled"
+
+- name: waiting for server up
+  wait_for:
+    host: "{{ inventory_hostname }}"
+    port: 22
+    delay: 10
+  delegate_to: localhost
+
+- name: Setting epel repo
+  dnf:
+    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm"
+    state: present
+
+- name: Install net-snmp independ package
+  dnf:
+    name: wget
+    state: present
+  
+- name: Install net-snmp Prerequisite package
+  dnf:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - perl-Encode
+  - perl-MIME-Base64
+  - perl-Time-Local
+  - perl-Math-BigRat
+  - perl-Math-BigInt-FastCalc
+  - mariadb
+
+- name: Install net-snmp package 1
+  dnf:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - http://repo.okay.com.mx/centos/8/x86_64/release//net-snmp-libs-5.8-7.el8.2.x86_64.rpm
+  - http://repo.okay.com.mx/centos/8/x86_64/release//net-snmp-agent-libs-5.8-7.el8.2.x86_64.rpm
+  - http://repo.okay.com.mx/centos/8/x86_64/release//net-snmp-5.8-7.el8.2.x86_64.rpm
+  - http://mirror.centos.org/centos/8/BaseOS/x86_64/os/Packages/lm_sensors-libs-3.4.0-20.20180522git70f7e08.el8.x86_64.rpm
+
+- name: Install net-snmp package 2
+  dnf:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - http://mirror.centos.org/centos/8/PowerTools/x86_64/os/Packages/perl-IO-stringy-2.111-9.el8.noarch.rpm
+  - ftp://ftp.pbone.net/mirror/ftp.redhat.com/pub/redhat/rhel/rhel-8-beta/appstream/aarch64/Packages/perl-JSON-2.97.001-2.el8.noarch.rpm
+  - http://download-ib01.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/p/perl-Mail-Sender-0.903-7.el8.noarch.rpm
+  - http://mirror.centos.org/centos/8/PowerTools/x86_64/os/Packages/perl-Types-Serialiser-1.0-12.el8.noarch.rpm
+  - http://mirror.centos.org/centos/8/PowerTools/x86_64/os/Packages/perl-common-sense-3.7.4-8.el8.x86_64.rpm
+  - http://mirror.centos.org/centos/8/AppStream/x86_64/os/Packages/perl-JSON-PP-2.97.001-3.el8.noarch.rpm
+  - http://repo.okay.com.mx/centos/8/x86_64/release//net-snmp-perl-5.8-7.el8.2.x86_64.rpm
+  - http://mirror.centos.org/centos/8/PowerTools/x86_64/os/Packages/perl-Digest-SHA1-2.13-23.el8.x86_64.rpm
+
+- name: Install Depend net-snmp Package
+  dnf:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - perl-Text-CSV
+  - perl-Text-Balanced
+  - perl-Config-IniFiles
+  - perl-Sys-Syslog
+  - perl-Digest-SHA
+  - perl-Net-SNMP
+
+- name: Install net-snmp-utils
+  dnf:
+    name: "http://repo.okay.com.mx/centos/8/x86_64/release//net-snmp-utils-5.8-7.el8.2.x86_64.rpm"
+    state: present
+
+- name: Install zabbix repo
+  dnf:
+    name: "https://repo.zabbix.com/zabbix/4.0/rhel/8/x86_64/zabbix-release-4.0-2.el8.noarch.rpm"
+    state: present
+
+- name: Install Zabbix Package
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - zabbix-server-mysql
+  - zabbix-web-mysql
+  - zabbix-web-japanese
+  - zabbix-agent
+  - zabbix-get
+  - mariadb-server
+  - python3-PyMySQL
+
+- name: Send MariaDB config mariadb-server.cnf
+  template:
+    src: mariadb-server.cnf.j2
+    dest: /etc/my.cnf.d/mariadb-server.cnf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Send MariaDB config mysql-clients.cnf
+  template:
+    src: mysql-clients.cnf.j2
+    dest: /etc/my.cnf.d/mysql-clients.cnf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Send MariaDB config client.cnf
+  template:
+    src: client.cnf.j2
+    dest: /etc/my.cnf.d/client.cnf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Start service mariadb
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: Delete database zabbix if exist
+  mysql_db:
+    name: zabbix
+    state: absent
+  ignore_errors: true
+
+- name: Create database zabbix
+  shell: mysql -uroot -e'create database zabbix character set utf8mb4;'
+
+- name: Set zabbixdb user account for localhost
+  mysql_user:
+    name: zabbix
+    host: localhost
+    state: present
+    password: "{{ zabbix_db_password }}"
+    priv: 'zabbix.*:ALL'
+
+- name: Restore database
+  mysql_db:
+    name: zabbix
+    state: import
+    target: /usr/share/doc/zabbix-server-mysql/create.sql.gz
+
+- name: Send httpd.conf
+  template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Send zabbix.conf under php-fpm
+  template:
+    src: zabbix.conf.j2
+    dest: /etc/php-fpm.d/zabbix.conf
+    owner: apache
+    group: apache
+    mode: 0644
+    backup: yes
+
+- name: Start httpd service
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: Start php-fpm service
+  service:
+    name: php-fpm
+    state: started
+    enabled: yes
+
+- name: Send snmptrapd.conf
+  template:
+    src: snmptrapd.conf.j2
+    dest: /etc/snmp/snmptrapd.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Start service snmptrapd
+  service:
+    name: snmptrapd
+    state: started
+    enabled: yes
+
+- name: send zabbix_server.conf
+  template:
+    src: zabbix_server.conf.j2
+    dest: /etc/zabbix/zabbix_server.conf
+    owner: zabbix
+    group: zabbix
+    mode: 0640
+    backup: yes
+
+- name: send zabbix.conf.php
+  template:
+    src: zabbix.conf.php.j2
+    dest: /etc/zabbix/web/zabbix.conf.php
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Start service zabbix-server
+  service:
+    name: zabbix-server
+    state: started
+    enabled: yes
+
+- name: Restart service httpd
+  service:
+    name: httpd
+    state: restarted
+
+- name: Restart service php-fpm
+  service:
+    name: php-fpm
+    state: restarted

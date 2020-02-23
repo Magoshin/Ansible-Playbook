@@ -3,6 +3,6 @@ zabbix_admin_user: admin
 zabbix_admin_password: zabbix
 zabbix_db_password: zabbixpassword
 zabbix_db_innodb_buffer_pool_size: 1G
-zabbix_snmp_community: public
+zabbix_snmp_community: zabbixcom
 readonly_zabbix_server_ipaddr: 172.31.22.189
 zabbix_rpm_latest: zabbix-release-4.0-1.el7.noarch.rpm

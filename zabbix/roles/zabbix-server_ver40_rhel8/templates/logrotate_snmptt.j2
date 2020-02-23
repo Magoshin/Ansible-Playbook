@@ -1,0 +1,14 @@
+/var/log/snmptt/snmptt*.log /var/log/snmptt/snmptthandler.debug {
+    weekly
+    notifempty
+    missingok
+}
+
+/var/log/snmptt/snmptt.debug {
+    weekly
+    notifempty
+    missingok
+    postrotate
+        /usr/bin/systemctl reload >/dev/null 2>/dev/null || true
+    endscript
+}
