@@ -1,4 +1,0 @@
----
-# vars file for beats
-##elasticsearch_ipaddr: 172.31.26.208
-target_rpm: packetbeat-6.5.4-x86_64.rpm

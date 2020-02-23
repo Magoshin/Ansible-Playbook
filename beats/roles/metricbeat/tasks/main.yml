@@ -1,3 +1,0 @@
----
-# tasks file for metricbeat
-- import_tasks: metrictbeat_install.yml

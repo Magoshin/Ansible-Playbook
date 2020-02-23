@@ -1,3 +1,0 @@
----
-# vars file for heartbeat
-target_rpm: heartbeat-6.1.1-x86_64.rpm
