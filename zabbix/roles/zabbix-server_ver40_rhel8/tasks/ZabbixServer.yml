@@ -144,7 +144,7 @@
   ignore_errors: true
 
 - name: Create database zabbix
-  shell: mysql -uroot -e'create database zabbix character set utf8mb4;'
+  shell: mysql -uroot -e'create database zabbix character set utf8;'
 
 - name: Set zabbixdb user account for localhost
   mysql_user:
